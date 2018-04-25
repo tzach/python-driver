@@ -124,6 +124,7 @@ build:
 
       pip install git+https://github.com/pcmanus/ccm.git
       # Install dependencies
+      sudo apt-get update
       sudo apt-get install -y libev4 libev-dev libssl-dev
 
       pip install -r test-requirements.txt
