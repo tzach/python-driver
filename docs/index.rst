@@ -53,6 +53,9 @@ Contents
 :doc:`faq`
     A collection of Frequently Asked Questions
 
+:doc:`dev_guide/index`
+    Architecture documentation, intended for developers.
+
 .. toctree::
    :hidden:
 
@@ -69,6 +72,7 @@ Contents
    object_mapper
    dates_and_times
    faq
+   dev_guide/index
 
 Getting Help
 ------------
