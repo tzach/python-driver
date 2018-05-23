@@ -1,16 +1,23 @@
 Clusters and Sessions
 =====================
 
-The :class:`.Cluster` object is typically the main object an application
-interacts with when using the driver.
-It provides methods for configuring the connection to the Cassandra cluster and
-holds the objects that maintain those connections.
+The :class:`.Cluster` object is often the first driver object an application
+instantiates.
+
+It provides `attributes <../api/cassandra/cluster.html#cassandra.cluster.Cluster-attributes>`_ for configuring the connection to the Cassandra cluster,
+
+.. It provides :doc:`attributes <../api/cassandra/cluster#cassandra.cluster.Cluster-attributes>` for configuring the connection to the Cassandra cluster,
+
+holds the objects that maintain those connections, and allows the user to
+create sessions for interacting with their Cassandra instance.
+
+
 
 - generic config
     - contact points
 - auth provider
 - ExecutionProfile
-    - ...
+    - dunno what's necessary to document here
 - user types
 - address translator
 - metrics collector
@@ -18,6 +25,7 @@ holds the objects that maintain those connections.
 - metadata
 - connections
     - control connection
+    - "pool" (actually host)
 - policies
     - lbp
     - reconnection policy
@@ -51,7 +59,29 @@ Sessions
 - request init listeners
 - waiting for schema agreement
 
-responsefuture
+Responsefuture
+
 - callbacks
+
 resultset
+
 - paging
+
+connections
+
+- authenticator
+- reactor
+- socket init stuff
+- holds requests
+- request id issuer
+- states
+  - defunct
+  - closed
+- tie in with reactors?
+- watchers
+
+Types
+
+- handle serialization and deserialization
+  - which is impl'd in Cython
+
