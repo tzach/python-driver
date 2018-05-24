@@ -4,7 +4,11 @@ Clusters and Sessions
 The :class:`.Cluster` object is often the first driver object an application
 instantiates.
 
-It provides `attributes <../api/cassandra/cluster.html#cassandra.cluster.Cluster-attributes>`_ for configuring the connection to the Cassandra cluster,
+It provides `attributes <../api/cassandra/cluster/index.html#cassandra.cluster.Cluster-attributes>`_ for configuring the connection to the Cassandra cluster,
+
+.. It provides `attributes <api/cassandra/cluster.html#cassandra.cluster.Cluster-attributes>`_ for configuring the connection to the Cassandra cluster,
+
+.. It provides `attributes <../api/cassandra/cluster.html#cassandra.cluster.Cluster-attributes>`_ for configuring the connection to the Cassandra cluster,
 
 .. It provides :doc:`attributes <../api/cassandra/cluster#cassandra.cluster.Cluster-attributes>` for configuring the connection to the Cassandra cluster,
 
