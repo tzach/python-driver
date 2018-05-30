@@ -6,7 +6,7 @@
 
 .. autoclass:: Cluster ([contact_points=('127.0.0.1',)][, port=9042][, executor_threads=2], **attr_kwargs)
 
-.. _cluster-attributes:
+   .. _cluster-attributes:
 
    .. autoattribute:: contact_points
 

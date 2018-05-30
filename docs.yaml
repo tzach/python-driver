@@ -20,9 +20,6 @@ sections:
       pip install "jinja2==2.8.1;python_version<'3.6'" "sphinx>=1.3,<2" geomet
       # build extensions like libev
       CASS_DRIVER_NO_CYTHON=1 python setup.py build_ext --inplace --force
-versions:
-  - name: LOCAL
-    ref: dev-guide
 rewrites:
   - search: cassandra.apache.org/doc/cql3/CQL.html
     replace: cassandra.apache.org/doc/cql3/CQL-3.0.html

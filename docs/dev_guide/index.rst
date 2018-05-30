@@ -6,7 +6,7 @@ driver developers understand how to change behavior and to help advanced users
 extending the driver understand how the driver uses their extensions.
 
 :doc:`cluster`
-    The central object in driver use patterns.
+    The central objects in typical driver use.
 
 :doc:`reactors`
     The underlying asynchronous event engines that the driver uses for I/O.
@@ -19,7 +19,8 @@ extending the driver understand how the driver uses their extensions.
     dev_guide/reactors
     dev_guide/cluster
 
-.. # Java TOC
+..
+   Java TOC
    - native protocol layer (codecs)
    - Netty pipeline
      - SslHandler
