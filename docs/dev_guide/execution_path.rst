@@ -105,6 +105,8 @@ When the application asks the |ResponseFuture| for the result, it will wait
 until either the response returns or the future's timeout expires.
 In either case the request's ID is returned to the connection as a valid ID.
 
+.. _response-processing:
+
 Response Processing
 -------------------
 
