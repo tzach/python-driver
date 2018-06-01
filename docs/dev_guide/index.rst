@@ -15,9 +15,8 @@ extending the driver understand how the driver uses their extensions.
 .. toctree::
     :maxdepth: 3
 
-    dev_guide
-    dev_guide/reactors
-    dev_guide/cluster
+    reactors
+    cluster
 
 ..
    Java TOC
