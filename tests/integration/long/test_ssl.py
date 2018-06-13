@@ -48,6 +48,7 @@ else:
     verify_certs = {'cert_reqs': ssl.CERT_REQUIRED,
                     'check_hostname': True}
 
+
 def setup_cluster_ssl(client_auth=False):
     """
     We need some custom setup for this module. This will start the ccm cluster with basic
