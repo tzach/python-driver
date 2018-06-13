@@ -124,6 +124,15 @@ class SSLConnectionTests(unittest.TestCase):
         remove_cluster()
 
     def test_big_text(self):
+        """
+        Reproduces PYTHON-891. Without the 891 fix, the client could fail to
+        send large requests over SSL.
+
+        @jira_ticket PYTHON-891
+        @expected_result The client can make large requests via SSL
+
+        @test_category connection:ssl
+        """
         abs_path_ca_cert_path = os.path.abspath(CLIENT_CA_CERTS)
         ssl_options = {'ca_certs': abs_path_ca_cert_path,
                        'ssl_version': ssl_version}
@@ -138,24 +147,33 @@ class SSLConnectionTests(unittest.TestCase):
             "(id uuid PRIMARY KEY, data text);"
         )
 
-        from cassandra.cqlengine.models import Model
-        from cassandra.cqlengine import columns
-        from cassandra.cqlengine.connection import set_session
+        # from cassandra.cqlengine.models import Model
+        # from cassandra.cqlengine import columns
+        # from cassandra.cqlengine.connection import set_session
         import math
         import uuid
 
-        class BigText(Model):
-            id = columns.UUID(primary_key=True, default=uuid.uuid4)
-            data = columns.Text()
+        session.execute(
+            "INSERT INTO ssl_test.big_text (id, data) "
+            "VALUES ({uuid}, {data});".format(
+                uuid=uuid.uuid4(),
+                data=("'" + ("0" * int(math.pow(10, 7)) + "'"))
+            )
+        )
 
-        cluster = Cluster(protocol_version=PROTOCOL_VERSION,
-                          ssl_options=ssl_options)
-        session = cluster.connect('ssl_test')
 
-        set_session(session)
+        # class BigText(Model):
+        #     id = columns.UUID(primary_key=True, default=uuid.uuid4)
+        #     data = columns.Text()
 
-        bt = BigText.create(data="0" * int(math.pow(10, 7)))
-        bt.delete()
+        # cluster = Cluster(protocol_version=PROTOCOL_VERSION,
+        #                   ssl_options=ssl_options)
+        # session = cluster.connect('ssl_test')
+
+        # set_session(session)
+
+        # bt = BigText.create(data="0" * int(math.pow(10, 7)))
+        # bt.delete()
 
 
 
