@@ -20,17 +20,75 @@ schedules:
       exclude:
         - python: [3.4, 3.6]
 
-  commit_branches:
+  commit_branches_libev:
     schedule: per_commit
     branches:
-      include: [/python.*/]
+      include: [ssl-test]
     env_vars: |
       EVENT_LOOP_MANAGER='libev'
-      EXCLUDE_LONG=1
+      SSL_TEST=1
     matrix:
       exclude:
         - python: [3.4, 3.6]
         - cassandra: ['2.0', '2.1', '3.0']
+  commit_branches_gevent:
+    schedule: per_commit
+    branches:
+      include: [ssl-test]
+    env_vars: |
+      EVENT_LOOP_MANAGER='gevent'
+      SSL_TEST=1
+    matrix:
+      exclude:
+        - python: [3.4, 3.6]
+        - cassandra: ['2.0', '2.1', '3.0']
+  commit_branches_eventlet:
+    schedule: per_commit
+    branches:
+      include: [ssl-test]
+    env_vars: |
+      EVENT_LOOP_MANAGER='eventlet'
+      SSL_TEST=1
+    matrix:
+      exclude:
+        - python: [3.4, 3.6]
+        - cassandra: ['2.0', '2.1', '3.0']
+  commit_branches_asyncio:
+    schedule: per_commit
+    branches:
+      include: [ssl-test]
+    env_vars: |
+      EVENT_LOOP_MANAGER='asyncio'
+      SSL_TEST=1
+    matrix:
+      exclude:
+        - python: [3.4, 3.6]
+        - cassandra: ['2.0', '2.1', '3.0']
+  commit_branches_async:
+    schedule: per_commit
+    branches:
+      include: [ssl-test]
+    env_vars: |
+      EVENT_LOOP_MANAGER='asyncore'
+      SSL_TEST=1
+    matrix:
+      exclude:
+        - python: [3.4, 3.6]
+        - cassandra: ['2.0', '2.1', '3.0']
+  commit_branches_twister:
+    schedule: per_commit
+    branches:
+      include: [ssl-test]
+    env_vars: |
+      EVENT_LOOP_MANAGER='twister'
+      SSL_TEST=1
+    matrix:
+      exclude:
+        - python: [3.4, 3.6]
+        - cassandra: ['2.0', '2.1', '3.0']
+
+
+
 
   weekly_libev:
     schedule: 0 10 * * 6
@@ -165,7 +223,10 @@ build:
         EVENT_LOOP_MANAGER=$EVENT_LOOP_MANAGER VERIFY_CYTHON=1 nosetests -s -v --logging-format="[%(levelname)s] %(asctime)s %(thread)d: %(message)s" --with-ignore-docstrings --with-xunit --xunit-file=unit_results.xml tests/unit/ || true
         EVENT_LOOP_MANAGER=eventlet VERIFY_CYTHON=1 nosetests -s -v --logging-format="[%(levelname)s] %(asctime)s %(thread)d: %(message)s" --with-ignore-docstrings --with-xunit --xunit-file=unit_eventlet_results.xml tests/unit/io/test_eventletreactor.py || true
         EVENT_LOOP_MANAGER=gevent VERIFY_CYTHON=1 nosetests -s -v --logging-format="[%(levelname)s] %(asctime)s %(thread)d: %(message)s" --with-ignore-docstrings --with-xunit --xunit-file=unit_gevent_results.xml tests/unit/io/test_geventreactor.py || true
+      fi
 
+      if [ -z "$SSL_TEST" ]; then
+        SIMULACRON_JAR=$SIMULACRON_JAR EVENT_LOOP_MANAGER=$EVENT_LOOP_MANAGER CASSANDRA_DIR=$CCM_INSTALL_DIR DSE_VERSION=$CCM_CASSANDRA_VERSION VERIFY_CYTHON=$FORCE_CYTHON nosetests -s -v --logging-format="[%(levelname)s] %(asctime)s %(thread)d: %(message)s" --with-ignore-docstrings --with-xunit --xunit-file=simulacron_results.xml tests/integration/long/test_ssl.py || true
       fi
 
       echo "Running with event loop manager: $EVENT_LOOP_MANAGER"
