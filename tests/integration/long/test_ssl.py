@@ -122,6 +122,42 @@ class SSLConnectionTests(unittest.TestCase):
         ccm_cluster.stop()
         remove_cluster()
 
+    def test_big_text(self):
+        abs_path_ca_cert_path = os.path.abspath(CLIENT_CA_CERTS)
+        ssl_options = {'ca_certs': abs_path_ca_cert_path,
+                       'ssl_version': ssl_version}
+        cluster = Cluster(protocol_version=PROTOCOL_VERSION, ssl_options=ssl_options)
+        session = cluster.connect(wait_for_all_pools=True)
+        session.execute(
+            "CREATE KEYSPACE ssl_test WITH replication = "
+            "{'class':'SimpleStrategy','replication_factor':1};"
+        )
+        session.execute(
+            "CREATE TABLE ssl_test.big_text "
+            "(id uuid PRIMARY KEY, data text);"
+        )
+
+        from cassandra.cqlengine.models import Model
+        from cassandra.cqlengine import columns
+        from cassandra.cqlengine.connection import set_session
+        import math
+        import uuid
+
+        class BigText(Model):
+            id = columns.UUID(primary_key=True, default=uuid.uuid4)
+            data = columns.Text()
+
+        cluster = Cluster(protocol_version=PROTOCOL_VERSION,
+                          ssl_options=ssl_options)
+        session = cluster.connect('ssl_test')
+
+        set_session(session)
+
+        bt = BigText.create(data="0" * int(math.pow(10, 7)))
+        bt.delete()
+
+
+
     def test_can_connect_with_ssl_ca(self):
         """
         Test to validate that we are able to connect to a cluster using ssl.
