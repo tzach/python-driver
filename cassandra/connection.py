@@ -128,8 +128,7 @@ class _Frame(object):
         return "ver({0}); flags({1:04b}); stream({2}); op({3}); offset({4}); len({5})".format(self.version, self.flags, self.stream, self.opcode, self.body_offset, self.end_pos - self.body_offset)
 
 
-NONBLOCKING = (errno.EAGAIN, errno.EWOULDBLOCK,
-               ssl.SSL_ERROR_WANT_READ, ssl.SSL_ERROR_WANT_WRITE)
+NONBLOCKING = (errno.EAGAIN, errno.EWOULDBLOCK)
 
 
 class ConnectionException(Exception):
