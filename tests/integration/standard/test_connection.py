@@ -191,7 +191,7 @@ class HeartbeatTest(unittest.TestCase):
 
 class ConnectionTests(object):
 
-    klass = None
+    klass, global_loop = None, False
 
     def setUp(self):
         self.klass.initialize_reactor()
@@ -394,10 +394,13 @@ class ConnectionTests(object):
         self.assertTrue(exception_thrown)
 
     def test_subclasses_share_loop(self):
-        class C1(AsyncoreConnection):
+        if not self.global_loop:
+            raise unittest.case.SkipTest
+
+        class C1(self.klass):
             pass
 
-        class C2(AsyncoreConnection):
+        class C2(self.klass):
             pass
 
         clusterC1 = Cluster(connection_class=C1)
@@ -412,7 +415,6 @@ class ConnectionTests(object):
 
 
 def get_eventloop_threads(name):
-    import threading
     event_loops_threads = [thread for thread in threading.enumerate() if name == thread.name]
 
     return event_loops_threads
@@ -420,8 +422,9 @@ def get_eventloop_threads(name):
 
 class AsyncoreConnectionTests(ConnectionTests, unittest.TestCase):
 
-    klass = AsyncoreConnection
-    event_loop_name = "cassandra_driver_event_loop"
+    klass, global_loop, event_loop_name = (
+        AsyncoreConnection, True, "cassandra_driver_event_loop"
+    )
 
     def setUp(self):
         if is_monkey_patched():
@@ -435,8 +438,9 @@ class AsyncoreConnectionTests(ConnectionTests, unittest.TestCase):
 
 class LibevConnectionTests(ConnectionTests, unittest.TestCase):
 
-    klass = LibevConnection
-    event_loop_name = "event_loop"
+    klass, global_loop, event_loop_name = (
+        LibevConnection, True, "event_loop"
+    )
 
     def setUp(self):
         if is_monkey_patched():
