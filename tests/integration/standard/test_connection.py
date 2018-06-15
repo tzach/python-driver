@@ -394,10 +394,10 @@ class ConnectionTests(object):
         self.assertTrue(exception_thrown)
 
     def test_subclasses_share_loop(self):
-        class C1(AsyncoreConnection):
+        class C1(self.klass):
             pass
 
-        class C2(AsyncoreConnection):
+        class C2(self.klass):
             pass
 
         clusterC1 = Cluster(connection_class=C1)
