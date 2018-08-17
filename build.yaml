@@ -90,7 +90,7 @@ schedules:
     matrix:
       exclude:
         - python: [3.4, 3.6]
-        - cassandra: ['2.0', '2.1', '2.2', '3.0']
+        - cassandra: ['2.0', '2.1', '2.2', '3.0', 'test-dse']
 
 python:
   - 2.7
@@ -106,6 +106,7 @@ cassandra:
   - '2.2'
   - '3.0'
   - '3.11'
+  - 'test-dse'
 
 env:
   CYTHON:
