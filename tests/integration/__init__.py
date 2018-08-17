@@ -116,6 +116,8 @@ CASSANDRA_DIR = os.getenv('CASSANDRA_DIR', None)
 
 default_cassandra_version = '3.11'
 CASSANDRA_VERSION = Version(os.getenv('CASSANDRA_VERSION', default_cassandra_version))
+mcv_string = os.getenv('MAPPED_CASSANDRA_VERSION', None)
+MAPPED_CASSANDRA_VERSION = Version(mcv_string) if mcv_string else CASSANDRA_VERSION
 
 default_dse_version = _get_dse_version_from_cass(CASSANDRA_VERSION.base_version)
 
@@ -392,6 +394,9 @@ def use_cluster(cluster_name, nodes, ipformat=None, start=True, workloads=[], se
                 CCM_CLUSTER.set_dse_configuration_options(dse_options)
             else:
                 log.debug("Creating new CCM cluster, {0}, with args {1}".format(cluster_name, ccm_options))
+
+                if 
+
                 CCM_CLUSTER = CCMCluster(path, cluster_name, **ccm_options)
                 CCM_CLUSTER.set_configuration_options({'start_native_transport': True})
                 if cassandra_version >= Version('2.2'):
