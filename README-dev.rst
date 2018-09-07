@@ -77,50 +77,60 @@ directory and build from scratch::
 
 Running the Tests
 =================
-In order for the extensions to be built and used in the test, run::
 
-    python setup.py nosetests
+We recommend using a
+[virtualenv](https://virtualenv.pypa.io/en/stable/userguide/) to create a clean
+test environment. Then, install the dependencies for the tests with `pip
+install -r test-requirements.txt` into that environment. For example:
+
+    virtualenv test-env -p /usr/bin/python3.6
+    . ./test-env/bin/activate
+    pip install -r test-requirements.txt
+
+For those unfamiliar with virtualenvs: the env is defined in the `test-env`
+directory, and is persistent. The `activate` step activates the environment
+in your shell and must be repeated if you start a new interpreter.
 
 You can run a specific test module or package like so::
 
-    python setup.py nosetests -w tests/unit/
+    nosetests tests/unit/
 
 You can run a specific test method like so::
 
-    python setup.py nosetests -w tests/unit/test_connection.py:ConnectionTest.test_bad_protocol_version
+    nosetests tests/unit/test_connection.py:ConnectionTest.test_bad_protocol_version
 
 Seeing Test Logs in Real Time
 -----------------------------
 Sometimes it's useful to output logs for the tests as they run::
 
-    python setup.py nosetests -w tests/unit/ --nocapture --nologcapture
+    nosetests tests/unit/ --nocapture --nologcapture
 
 Use tee to capture logs and see them on your terminal::
 
-    python setup.py nosetests -w tests/unit/ --nocapture --nologcapture 2>&1 | tee test.log
+    nosetests tests/unit/ --nocapture --nologcapture 2>&1 | tee test.log
 
 Specifying a Cassandra Version for Integration Tests
 ----------------------------------------------------
 You can specify a cassandra version with the ``CASSANDRA_VERSION`` environment variable::
 
-    CASSANDRA_VERSION=2.0.9 python setup.py nosetests -w tests/integration/standard
+    CASSANDRA_VERSION=2.0.9 nosetests tests/integration/standard
 
 You can also specify a cassandra directory (to test unreleased versions)::
 
-    CASSANDRA_DIR=/home/thobbs/cassandra python setup.py nosetests -w tests/integration/standard
+    CASSANDRA_DIR=/home/thobbs/cassandra nosetests tests/integration/standard
 
 Specifying the usage of an already running Cassandra cluster
 ----------------------------------------------------
 The test will start the appropriate Cassandra clusters when necessary  but if you don't want this to happen because a Cassandra cluster is already running the flag ``USE_CASS_EXTERNAL`` can be used, for example: 
 
-	USE_CASS_EXTERNAL=1 python setup.py nosetests -w tests/integration/standard
+    USE_CASS_EXTERNAL=1 nosetests tests/integration/standard
 
 Specify a Protocol Version for Tests
 ------------------------------------
 The protocol version defaults to 1 for cassandra 1.2 and 2 otherwise.  You can explicitly set
 it with the ``PROTOCOL_VERSION`` environment variable::
 
-    PROTOCOL_VERSION=3 python setup.py nosetests -w tests/integration/standard
+    PROTOCOL_VERSION=3 nosetests tests/integration/standard
 
 Testing Multiple Python Versions
 --------------------------------
