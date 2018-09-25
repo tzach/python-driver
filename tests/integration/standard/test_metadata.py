@@ -1894,6 +1894,9 @@ class BadMetaTest(unittest.TestCase):
         with patch.object(self.parser_class, '_build_aggregate', side_effect=self.BadMetaException):
             self.cluster.refresh_schema_metadata()   # presently do not capture these errors on udt direct refresh -- make sure it's contained during full refresh
             m = self.cluster.metadata.keyspaces[self.keyspace_name]
+            self.assertIsNotNone(
+                m._exc_info, 'schema parsing for {} did not fail as expected'.format(self.keyspace_name)
+            )
             self.assertIs(m._exc_info[0], self.BadMetaException)
             self.assertIn("/*\nWarning:", m.export_as_string())
 
